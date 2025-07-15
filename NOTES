@@ -1,0 +1,164 @@
+Main Folder in local- Manju-Project01 ->EcomMS
+-> git init, add a file-NOTES, git add ., git commit -m "first" , git push -u origin main, git status, git push
+->different services-order, product etc
+->(Resolved) getting error in above service- maven build was not downloading, when open individual service/EcomMS folder then it started to download
+
+
+
+---------------xxxxxxxxxxxxxxxxxxxxxxxxx----------------------------xxxxxxxxxxxxxxxx--------------------------
+Here's a complete project structure and architecture outline for an E-commerce Microservices System.
+This guide includes services, database suggestions, tech stack, and folder structure.
+
+E-commerce Microservices - High-Level Architecture
+Core Microservices-
+Service Name	Responsibilities
+User Service	Register, Login, Profile Management, Role (Admin/Customer)
+Product Service	Product Catalog (CRUD), Categories, Search
+Order Service	Place Order, Order History, Order Status
+Cart Service	Manage Shopping Cart (Add/Remove/Update Items)
+Payment Service	Payment Gateway Integration, Payment Status
+Inventory Service	Stock Management, Product Availability
+Notification Service	Email/SMS/Push Notifications (Order Confirmation, etc.)
+Shipping Service (optional)	Track Shipment, Address Management
+Review & Rating Service (optional)	Product Reviews, Ratings
+
+Common Components
+Component	Purpose
+API Gateway (e.g., Spring Cloud Gateway)	Unified entry point, routing, load balancing
+Service Registry (e.g., Eureka)	Service discovery
+Config Server (e.g., Spring Cloud Config)	Centralized configuration
+Database per Service (DB per microservice)	Loose coupling between services
+JWT Authentication	Secure communication
+Kafka/RabbitMQ	Async communication (optional)
+Zipkin/Sleuth	Distributed tracing
+Prometheus/Grafana	Monitoring
+
+Technology Stack Suggestion
+Language: Java 17+
+Framework: Spring Boot + Spring Cloud
+Database:
+User Service – MySQL/PostgreSQL
+Product Service – MongoDB (for flexibility), or MySQL
+Order Service – MySQL
+Inventory Service – MongoDB or MySQL
+
+Security: Spring Security, JWT
+
+Communication:
+REST (Synchronous)
+Kafka/RabbitMQ (Asynchronous)
+
+Build Tool: Maven/Gradle
+
+Containerization: Docker
+Orchestration: Kubernetes (optional for scaling)
+
+CI/CD: Jenkins/GitHub Actions
+
+Folder Structure (Each Microservice)
+swift
+ecommerce-user-service/
+│
+├── src/main/java/com/ecommerce/user/
+│   ├── controller/       // REST Controllers
+│   ├── service/          // Business Logic
+│   ├── repository/       // JPA Repositories
+│   ├── entity/           // Entity Classes
+│   ├── dto/              // Request/Response DTOs
+│   ├── exception/        // Custom Exceptions
+│   └── config/           // Security/Swagger/Config
+│
+├── src/main/resources/
+│   ├── application.yml   // Configurations
+│
+├── pom.xml               // Maven Dependency File
+Repeat similar structure for other services
+
+Database Design (Sample)-->>>>>>>>>>>>>
+
+User Service
+Field	Type
+id	UUID
+name	String
+email	String
+password	String
+role	ENUM
+
+Product Service
+Field	Type
+id	UUID
+name	String
+description	String
+price	Decimal
+stockQuantity	Integer
+category	String
+
+Order Service
+Field	Type
+id	UUID
+userId	UUID
+productList	JSON / Separate Table
+totalAmount	Decimal
+status	ENUM
+
+Communication Flow Example--------->>>>>>>>>>>>>>>>>>>>>>>>>>>>
+Place Order Flow
+Client → API Gateway → Order Service
+Order Service calls Inventory Service to check stock
+If stock is available, call Payment Service
+On payment success, reduce stock via Inventory Service
+Notify user via Notification Service
+
+Deployment Architecture-------->>>>>>>>>>>>>
+
+[ Client (Frontend: React/Angular) ]
+            |
+     [ API Gateway ]
+            |
+   ---------------------------------
+   |       |         |           |
+User   Product   Order   Inventory  ...
+Service Service Service   Service
+
+[ Kafka/RabbitMQ for Events ]
+[ Centralized Logging: ELK/Zipkin ]
+
+Project Management (Suggested Milestones)
+Sprint	Task
+Sprint 1	Setup User Service + JWT Auth
+Sprint 2	Product & Inventory Service
+Sprint 3	Cart & Order Service
+Sprint 4	Payment & Notification
+Sprint 5	API Gateway + Service Discovery
+Sprint 6	Dockerize + CI/CD + Monitoring
+
+Tools to Use
+Postman / Swagger – API Testing
+Docker Compose – Local microservice orchestration
+Kafka UI / Mongo Compass / DBeaver – DB and Event monitoring
+GitHub / GitLab – Source Code Management
+
+
+
+
+
+Summary Cheat Sheet--------------->
+Feature	Dependency
+REST APIs	spring-boot-starter-web
+Database (MySQL)	spring-boot-starter-data-jpa + mysql-connector-java
+MongoDB (Optional)	spring-boot-starter-data-mongodb
+Security (JWT)	spring-boot-starter-security + jjwt
+Service Discovery	spring-cloud-starter-netflix-eureka-client
+API to API Calls	spring-cloud-starter-openfeign
+Event Messaging	spring-kafka
+API Docs	springdoc-openapi-starter-webmvc-ui (Swagger)
+Monitoring	spring-boot-starter-actuator
+Testing	spring-boot-starter-test, mockito-core
+
+Optional (If Needed)
+Dependency	Use Case
+spring-boot-starter-mail	Email notifications (order confirmation, etc.)
+spring-cloud-config-client	Connect to centralized config server
+resilience4j / spring-cloud-starter-circuitbreaker-resilience4j	Handle failures with circuit breaker and retries
+
+
