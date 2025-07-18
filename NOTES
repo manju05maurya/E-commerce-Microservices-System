@@ -1,8 +1,15 @@
+Swagger-API doc
+Unit test cases
+Github Copiolet
+
 Main Folder in local- Manju-Project01 ->EcomMS
 -> git init, add a file-NOTES, git add ., git commit -m "first" , git push -u origin main, git status, git push
 ->different services-order, product etc
 ->(Resolved) getting error in above service- maven build was not downloading, when open individual service/EcomMS folder then it started to download
 
+Working on Product service:
+added different pkg for controller,repository,entity,service
+added conf for DB in application.properties-url,username,password,driver
 
 
 ---------------xxxxxxxxxxxxxxxxxxxxxxxxx----------------------------xxxxxxxxxxxxxxxx--------------------------
